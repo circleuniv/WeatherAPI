@@ -2,11 +2,15 @@ import flask
 import pandas as pd
 
 app=flask.Flask(__name__)
+#variable={'data1':'您好嗎','data2':'我很好'}
+stations=pd.read_csv("data_small/stations.txt",skiprows=17)
+stations=stations[['STAID',
+                   'STANAME                                 ']]
 
 @app.route('/')
 def home():
     # 一定要放在 templates 資料夾裡
-    return  flask.render_template("home.html")
+    return  flask.render_template("home.html",data=stations.to_html())
 
 @app.route('/api/v1/<station>/<date>')
 def about(station,date):

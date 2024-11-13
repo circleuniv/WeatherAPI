@@ -1,4 +1,5 @@
 import flask
+import pandas as pd
 
 app=flask.Flask(__name__)
 
@@ -9,7 +10,11 @@ def home():
 
 @app.route('/api/v1/<station>/<date>')
 def about(station,date):
-    temperature=23
+    filename="data_small/TG_STAID"+str(station).zfill(6)+".txt"
+    # 可先在jupyterlab 實驗
+    df=pd.read_csv(filename,skiprows=20,parse_dates=["    DATE"])
+    temperature=df.loc[df['    DATE'] == date]['   TG'].squeeze() / 10
+
     return  {'station':station,
              'date':date,'temperature':temperature}
 
